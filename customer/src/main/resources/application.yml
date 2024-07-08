@@ -1,0 +1,23 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: customer
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/customer?allowPublicKeyRetrieval=true&useSSL=false
+    username: root
+    password: 1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    database: MYSQL
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+  eureka:
+    client:
+      fetch-registry: true
+      register-with-eureka: true
+      application:
+        name: customer
