@@ -8,9 +8,13 @@ services:
       MYSQL_ROOT_PASSWORD: 1234
       MYSQL_DATABASE: amigoscode
     ports:
-      - "3307:3306"  # Map MySQL container's port 3306 to host port 3307
+      - "3307:3306"
     volumes:
       - mysql_data:/var/lib/mysql
-
+  zipkin:
+    image: openzipkin/zipkin
+    container_name: zipkin
+    ports:
+      - "9411:9411"
 volumes:
   mysql_data:

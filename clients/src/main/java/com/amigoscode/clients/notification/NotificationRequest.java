@@ -7,14 +7,15 @@ import lombok.Setter;
 
 @Setter
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
 public class NotificationRequest {
-    private Integer id;
     private Integer toCustomerId;
     private String toCustomerEmail;
     private String message;
 
-    public NotificationRequest(Integer id, String email, String format) {
+    public NotificationRequest(Integer toCustomerId, String toCustomerEmail, String message) {
+        this.toCustomerId = toCustomerId;
+        this.toCustomerEmail = toCustomerEmail;
+        this.message = message;
     }
 }

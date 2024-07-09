@@ -29,12 +29,17 @@ public class CustomerServices {
 
 		try {
 			FraudCheckResponse fraudCheckResponse = fraudClient.isFraudster(customer.getId());
+			if (fraudCheckResponse == null) {
+				throw new IllegalStateException("Fraud check response is null");
+			}
+
 			if (fraudCheckResponse.isFraudster()) {
 				throw new IllegalStateException("Customer flagged as fraudulent during registration");
 			}
-		} catch (NullPointerException e) {
-			log.error("Customer ID was null after saving customer. Fraud check not performed.", e);
+		} catch (Exception e) {
+			log.error("Exception during fraud check: ", e);
 		}
+
 		notificationClient.sendNotification(
 				new NotificationRequest(
 						customer.getId(),
