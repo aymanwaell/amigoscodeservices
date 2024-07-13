@@ -1,4 +1,4 @@
-package org.Ayman;
+package com.amigoscode.amqp;
 
 /**
  * Hello world!
