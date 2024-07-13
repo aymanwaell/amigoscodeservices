@@ -1,6 +1,5 @@
 package com.amigoscode.clients.notification;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
