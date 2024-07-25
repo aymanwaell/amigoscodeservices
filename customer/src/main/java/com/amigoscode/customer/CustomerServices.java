@@ -1,5 +1,6 @@
 package com.amigoscode.customer;
 
+import com.amigoscode.amqp.RabbitMQMessageProducer;
 import com.amigoscode.clients.fraud.FraudCheckResponse;
 import com.amigoscode.clients.fraud.FraudClient;
 import com.amigoscode.clients.notification.NotificationClient;
@@ -16,7 +17,7 @@ public class CustomerServices {
 
 	private final CustomerRepository customerRepository;
 	private final FraudClient fraudClient;
-	private final NotificationClient notificationClient;
+	private final RabbitMQMessageProducer rabbitMQMessageProducer;
 
 	@Transactional
 	public void registerCustomer(CustomerRegistrationRequest request) {
@@ -39,13 +40,15 @@ public class CustomerServices {
 		} catch (Exception e) {
 			log.error("Exception during fraud check: ", e);
 		}
-
-		notificationClient.sendNotification(
-				new NotificationRequest(
+		NotificationRequest notificationRequest = new NotificationRequest(
 						customer.getId(),
 						customer.getEmail(),
 						String.format("Hi %s, welcome to Amigoscode...", customer.getFirstName())
-				)
+				);
+		rabbitMQMessageProducer.publish(
+				notificationRequest,
+				"internal.exchange",
+				"internal.notification.routing-key"
 		);
 	}
 }

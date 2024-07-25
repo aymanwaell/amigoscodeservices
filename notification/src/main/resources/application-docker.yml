@@ -1,0 +1,39 @@
+server:
+  port: 8999
+
+spring:
+  application:
+    name: notification
+
+  datasource:
+    url: jdbc:mysql://mysql:3306/notification?createDatabaseIfNotExist=true&useSSL=false
+    username: root
+    password: 1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    database: MYSQL
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+
+  zipkin:
+    base-url: http://zipkin:9411
+
+  eureka:
+    client:
+      fetch-registry: true
+      register-with-eureka: true
+      service-url:
+        defaultZone: http://eureka-server:8761/eureka/
+      instance:
+        prefer-ip-address: true
+
+rabbitmq:
+  addresses: rabbitmq:5672
+  exchanges:
+    internal: internal.exchange
+  queues:
+    notification: notification.queue
+  routing-keys:
+    internal-notification: internal.notification.routing-key

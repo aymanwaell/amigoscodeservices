@@ -17,6 +17,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="amigosservices" target="1.8" />
       <module name="eureka-servera" target="1.8" />
     </bytecodeTargetLevel>
   </component>
