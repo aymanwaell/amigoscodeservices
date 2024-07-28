@@ -1,36 +1,31 @@
 server:
   port: 8999
-
 spring:
   application:
     name: notification
-
   datasource:
-    url: jdbc:mysql://localhost:3306/notification?createDatabaseIfNotExist=true&useSSL=false
+    url: jdbc:mysql://localhost:3306/notification?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
     username: root
     password: 1234
     driver-class-name: com.mysql.cj.jdbc.Driver
-
   jpa:
     database: MYSQL
     show-sql: true
     hibernate:
       ddl-auto: create-drop
-
   zipkin:
     base-url: http://localhost:9411
-
-  eureka:
-    client:
-      fetch-registry: true
-      register-with-eureka: true
-      service-url:
-        defaultZone: http://localhost:8761/eureka/
-      instance:
-        prefer-ip-address: true
+  rabbitmq:
+    addresses: localhost:5672
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    fetch-registry: true
+    register-with-eureka: true
+    enabled: true
 
 rabbitmq:
-  addresses: localhost:5672
   exchanges:
     internal: internal.exchange
   queues:

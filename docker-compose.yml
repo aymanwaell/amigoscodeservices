@@ -3,8 +3,7 @@ version: '3.9'
 services:
   mysql:
     container_name: mysql
-    image: mysql:8.0
-    restart: always
+    image: mysql:8.4.2
     environment:
       MYSQL_ROOT_PASSWORD: 1234
       MYSQL_DATABASE: amigoscode
@@ -12,7 +11,9 @@ services:
       - "3307:3306"
     volumes:
       - mysql_data:/var/lib/mysql
-
+    networks:
+      - mysql
+    restart: unless-stopped
   zipkin:
     image: openzipkin/zipkin
     container_name: zipkin
@@ -22,11 +23,14 @@ services:
       - spring
 
   rabbitmq:
-    image: rabbitmq:3.9.11-management-alpine
+    image: rabbitmq:3-management
     container_name: rabbitmq
     ports:
       - "5672:5672"
       - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
     networks:
       - spring
 
@@ -66,6 +70,7 @@ services:
       - spring
       - mysql
     depends_on:
+      - eureka-server
       - zipkin
       - mysql
       - rabbitmq
@@ -81,6 +86,7 @@ services:
       - spring
       - mysql
     depends_on:
+      - eureka-server
       - zipkin
       - mysql
       - rabbitmq
@@ -89,13 +95,14 @@ services:
     image: aymanwael/notification:latest
     container_name: notification
     ports:
-      - "8082:8082"
+      - "8999:8999"
     environment:
       - SPRING_PROFILES_ACTIVE=docker
     networks:
       - spring
       - mysql
     depends_on:
+      - eureka-server
       - zipkin
       - mysql
       - rabbitmq
